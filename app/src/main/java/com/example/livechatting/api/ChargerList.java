@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class ChargerList {
     @SerializedName("sign_in")
-    private ArrayList<Charger.Server> signIn;
+    private ArrayList<Charger.SignIn> signIn;
 
-    public ArrayList<Charger.Server> getSignIn() {
+    public ArrayList<Charger.SignIn> getSignIn() {
         return signIn;
     }
 }

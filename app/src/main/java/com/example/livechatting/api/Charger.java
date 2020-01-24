@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Charger {
-    public class Server {
+    public class SignIn {
         @SerializedName("status")
         @Expose
         private String status;

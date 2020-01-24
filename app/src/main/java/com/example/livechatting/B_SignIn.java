@@ -19,7 +19,7 @@ import com.example.livechatting.api.Charger;
 import com.example.livechatting.api.ChargerList;
 import com.example.livechatting.api.RetroClient;
 import com.example.livechatting.data.Shared;
-import com.example.livechatting.data.SignIn;
+import com.example.livechatting.data.UserInfo;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -105,17 +105,11 @@ public class B_SignIn extends AppCompatActivity implements View.OnClickListener 
             public void onResponse(@NonNull Call<ChargerList> call, @NonNull Response<ChargerList> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        ArrayList<Charger.Server> list = response.body().getSignIn();
+                        ArrayList<Charger.SignIn> list = response.body().getSignIn();
                         String status = list.get(0).getStatus();
 
                         switch (status) {
-                            case "0":
-                                //로그인 정보 저장
-                                SignIn.id = list.get(0).getId();
-                                SignIn.nick = list.get(0).getNick();
-                                SignIn.img = list.get(0).getImg();
-
-                                //자동로그인 여부 저장
+                            case "0": // 로그인 가능
                                 CheckBox cb_auto = findViewById(R.id.b_cb_auto);
                                 if(cb_auto.isChecked()) {
                                     Shared.setIsAuto(getApplicationContext(),true);
@@ -123,14 +117,18 @@ public class B_SignIn extends AppCompatActivity implements View.OnClickListener 
                                     Shared.setIsAuto(getApplicationContext(),false);
                                 }
 
+                                UserInfo.id = list.get(0).getId();
+                                UserInfo.nick = list.get(0).getNick();
+                                UserInfo.img = list.get(0).getImg();
+
                                 Intent intent = new Intent(getApplicationContext(), C_Main.class);
                                 startActivity(intent);
                                 finish();
                                 break;
-                            case "1":
+                            case "1": // 비밀번호가 맞지 않음
                                 Toast.makeText(getApplicationContext(), "비밀번호를 잘못 입력하셨습니다", Toast.LENGTH_SHORT).show();
                                 break;
-                            case "2":
+                            case "2": // 아이디 존재 하지 않음
                                 Toast.makeText(getApplicationContext(), "등록되지 않은 아이디입니다", Toast.LENGTH_SHORT).show();
                                 break;
                         }
