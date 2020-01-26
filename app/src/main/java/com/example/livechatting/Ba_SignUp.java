@@ -45,18 +45,17 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
         et_pw = findViewById(R.id.ba_et_pw);
         et_pwCheck = findViewById(R.id.ba_et_pwCheck);
 
+        ImageView iv_profile = findViewById(R.id.ba_iv_photo);
         View bt_checkId = findViewById(R.id.ba_bt_checkId);
         View bt_checkNick = findViewById(R.id.ba_bt_checkNick);
         View bt_signUp = findViewById(R.id.ba_bt_signUp);
         View tv_signIn = findViewById(R.id.ba_tv_signIn);
 
+        iv_profile.setOnClickListener(this);
         bt_checkId.setOnClickListener(this);
         bt_checkNick.setOnClickListener(this);
         bt_signUp.setOnClickListener(this);
         tv_signIn.setOnClickListener(this);
-
-        ImageView iv_profile = findViewById(R.id.ba_iv_photo);
-        iv_profile.setOnClickListener(v -> showDialog());
 
         // 프로필 이미지 기본으로 초기화
         Glide.with(getApplicationContext())
@@ -80,6 +79,9 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ba_iv_photo:
+                showDialog();
+                break;
             case R.id.ba_bt_checkId:
                 checkId();
                 break;
@@ -95,6 +97,7 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
         }
     }
 
+    // 프로필 사진 선택 방법 dialog
     private void showDialog() {
         List<String> ListItems = new ArrayList<>();
         ListItems.add("카메라");
@@ -111,7 +114,7 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
                     ActivityCompat.requestPermissions(this, PERMISSIONS_CAMERA, PER_RESULT_CAMERA);
                     break;
                 case 1: // 얼굴검출 카메라
-                    Toast.makeText(getApplicationContext(), "준비 중입니다.", Toast.LENGTH_SHORT).show();
+                    ActivityCompat.requestPermissions(this, PERMISSIONS_CAMERA, PER_RESULT_CAMERA_OPENCV);
                     break;
                 case 2: // 갤러리
                     ActivityCompat.requestPermissions(this, PERMISSIONS_ALBUM, PER_RESULT_ALBUM);

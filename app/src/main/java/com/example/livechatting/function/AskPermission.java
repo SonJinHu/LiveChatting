@@ -17,13 +17,17 @@ public abstract class AskPermission extends AppCompatActivity {
 
     public final String[] PERMISSIONS_CAMERA = new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     public final String[] PERMISSIONS_ALBUM = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    public final int PER_RESULT_CAMERA = 100;
-    public final int PER_RESULT_ALBUM = 200;
-    public final int ACT_RESULT_SETTINGS_CAMERA = 300;
+    public final int PER_RESULT_ALBUM = 100;
+    public final int PER_RESULT_CAMERA = 200;
+    public final int PER_RESULT_CAMERA_OPENCV = 300;
     public final int ACT_RESULT_SETTINGS_ALBUM = 400;
+    public final int ACT_RESULT_SETTINGS_CAMERA = 500;
 
     public abstract void allowedPermissionAlbum();
+
     public abstract void allowedPermissionCamera();
+
+    public abstract void allowedPermissionOpenCV();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -34,20 +38,6 @@ public abstract class AskPermission extends AppCompatActivity {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 checkResult = false;
                 break;
-            }
-        }
-
-        if (requestCode == PER_RESULT_CAMERA) {
-            if (checkResult) {
-                allowedPermissionCamera();
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])
-                        || ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[1])
-                        || ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[2])) {
-                    showDialogCameraPermission();
-                } else {
-                    showDialogCameraPermissionBySelectNoShow();
-                }
             }
         }
 
@@ -63,6 +53,54 @@ public abstract class AskPermission extends AppCompatActivity {
                 }
             }
         }
+
+        if (requestCode == PER_RESULT_CAMERA || requestCode == PER_RESULT_CAMERA_OPENCV) {
+            if (checkResult) {
+                if (requestCode == PER_RESULT_CAMERA) {
+                    allowedPermissionCamera();
+                } else {
+                    allowedPermissionOpenCV();
+                }
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])
+                        || ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[1])
+                        || ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[2])) {
+                    showDialogCameraPermission();
+                } else {
+                    showDialogCameraPermissionBySelectNoShow();
+                }
+            }
+        }
+    }
+
+    private void showDialogAlbumPermission() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("필수 사용 권한")
+                .setMessage(getEmojiByUnicode(0x1F4BE) + " 저장공간\n"
+                        + "사진을 저장하고 불러오기 위해 '저장공간' 사용 권한이 필요합니다.")
+                .setPositiveButton("재시도", (dialog, which) -> requestPermissions(PERMISSIONS_ALBUM, PER_RESULT_ALBUM))
+                .setNegativeButton("닫기", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    private void showDialogAlbumPermissionBySelectNoShow() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("필수 사용 권한")
+                .setMessage(getEmojiByUnicode(0x1F4BE) + " 저장공간\n"
+                        + "사진을 저장하고 불러오기 위해 '저장공간' 사용 권한이 필요합니다.\n\n"
+                        + "[설정] → [권한] 에서 권한을 허용해주세요.")
+                .setPositiveButton("설정", (dialog, which) -> {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package", getPackageName(), null));
+                    startActivityForResult(intent, ACT_RESULT_SETTINGS_ALBUM);
+                })
+                .setNegativeButton("닫기", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     private void showDialogCameraPermission() {
@@ -92,36 +130,6 @@ public abstract class AskPermission extends AppCompatActivity {
                     intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     intent.setData(Uri.fromParts("package", getPackageName(), null));
                     startActivityForResult(intent, ACT_RESULT_SETTINGS_CAMERA);
-                })
-                .setNegativeButton("닫기", (dialog, which) -> dialog.dismiss())
-                .setCancelable(false)
-                .create()
-                .show();
-    }
-
-    private void showDialogAlbumPermission() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("필수 사용 권한")
-                .setMessage(getEmojiByUnicode(0x1F4BE) + " 저장공간\n"
-                        + "사진을 저장하고 불러오기 위해 '저장공간' 사용 권한이 필요합니다.")
-                .setPositiveButton("재시도", (dialog, which) -> requestPermissions(PERMISSIONS_ALBUM, PER_RESULT_ALBUM))
-                .setNegativeButton("닫기", (dialog, which) -> dialog.dismiss())
-                .setCancelable(false)
-                .create()
-                .show();
-    }
-
-    private void showDialogAlbumPermissionBySelectNoShow() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("필수 사용 권한")
-                .setMessage(getEmojiByUnicode(0x1F4BE) + " 저장공간\n"
-                        + "사진을 저장하고 불러오기 위해 '저장공간' 사용 권한이 필요합니다.\n\n"
-                        + "[설정] → [권한] 에서 권한을 허용해주세요.")
-                .setPositiveButton("설정", (dialog, which) -> {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.fromParts("package", getPackageName(), null));
-                    startActivityForResult(intent, ACT_RESULT_SETTINGS_ALBUM);
                 })
                 .setNegativeButton("닫기", (dialog, which) -> dialog.dismiss())
                 .setCancelable(false)

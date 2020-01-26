@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
+import com.example.livechatting.OpenCV;
 import com.example.livechatting.data.Constant;
 
 import java.io.BufferedOutputStream;
@@ -24,8 +25,8 @@ import java.io.OutputStream;
 public abstract class PickProfileImage extends AskPermission {
 
     private final String TAG = getClass().getName();
-    private final int ACT_RESULT_CAMERA = 101;
-    private final int ACT_RESULT_ALBUM = 102;
+    private final int ACT_RESULT_ALBUM = 101;
+    private final int ACT_RESULT_CAMERA = 102;
     private final int ACT_RESULT_CROP = 103;
 
     private Uri tmpFileUri;
@@ -71,6 +72,12 @@ public abstract class PickProfileImage extends AskPermission {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, tmpFileUri);
         startActivityForResult(intent, ACT_RESULT_CAMERA);
+    }
+
+    @Override
+    public void allowedPermissionOpenCV() {
+        Intent intent = new Intent(this, OpenCV.class);
+        startActivity(intent);
     }
 
     @Override
