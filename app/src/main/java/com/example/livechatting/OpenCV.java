@@ -6,18 +6,20 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.livechatting.function.FaceDetection;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
 import java.util.Collections;
 import java.util.List;
 
-public class OpenCV extends AppCompatActivity {
+public class OpenCV extends FaceDetection {
 
     private final String TAG = getClass().getName();
     private BaseLoaderCallback mLoaderCallback;
@@ -25,28 +27,10 @@ public class OpenCV extends AppCompatActivity {
     private Mat matInput;
     private Mat matResult;
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("opencv_java4");
-        System.loadLibrary("native-lib");
-    }
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
-
-    public native void ConvertRGBtoGray(long matAddrInput, long matAddrResult);
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.open_cv);
-
-        // Example of a call to a native method
-        //TextView tv = findViewById(R.id.sample_text);
-        //tv.setText(stringFromJNI());
+        setContentView(R.layout.baa_face_detection);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -82,11 +66,14 @@ public class OpenCV extends AppCompatActivity {
                 matInput = inputFrame.rgba();
                 if (matResult == null)
                     matResult = new Mat(matInput.rows(), matInput.cols(), matInput.type());
-                ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr());
+                //ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr());
+                Core.flip(matInput, matInput, 1);
+                detect(cascadeClassifier_face, cascadeClassifier_eye,
+                        matInput.getNativeObjAddr(), matResult.getNativeObjAddr());
                 return matResult;
             }
         });
-        mOpenCvCameraView.setCameraIndex(0);
+        mOpenCvCameraView.setCameraIndex(1); // 0: back-camera, 1: front-camera
     }
 
     @Override
@@ -94,8 +81,10 @@ public class OpenCV extends AppCompatActivity {
         super.onStart();
         List<? extends CameraBridgeViewBase> cameraViews = Collections.singletonList(mOpenCvCameraView);
         for (CameraBridgeViewBase cameraBridgeViewBase : cameraViews) {
-            if (cameraBridgeViewBase != null)
+            if (cameraBridgeViewBase != null) {
                 cameraBridgeViewBase.setCameraPermissionGranted();
+                read_cascade_file();
+            }
         }
     }
 
