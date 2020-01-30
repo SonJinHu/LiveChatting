@@ -36,7 +36,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".A_Splash"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -44,13 +45,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".B_SignIn" />
-        <activity android:name=".Ba_SignUp" />
         <activity
-            android:name=".OpenCV"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape" />
-        <activity android:name=".C_Main" />
+            android:name=".B_SignIn"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ba_SignUp"
+            android:screenOrientation="portrait" />
+        <activity android:name=".BaA_FaceDetection" />
+        <activity
+            android:name=".BaB_PickPicture"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".C_Main"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

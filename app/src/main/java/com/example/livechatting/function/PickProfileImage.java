@@ -12,7 +12,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
-import com.example.livechatting.OpenCV;
+import com.example.livechatting.BaA_FaceDetection;
 import com.example.livechatting.data.Constant;
 
 import java.io.BufferedOutputStream;
@@ -31,16 +31,7 @@ public abstract class PickProfileImage extends AskPermission {
 
     private Uri tmpFileUri;
 
-    public abstract void onAfterProfile(File file, Bitmap bitmap);
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // 이미지 파일 저장할 폴더 생성
-        File dir = new File(Constant.DIRECTORY_PATH);
-        if (!dir.exists() && dir.mkdir())
-            Log.e(TAG, "LiveChatting 폴더 생성: " + dir.getAbsolutePath());
-    }
+    public abstract void onAfterProfile(File file);
 
     @Override
     public void allowedPermissionAlbum() {
@@ -75,9 +66,9 @@ public abstract class PickProfileImage extends AskPermission {
     }
 
     @Override
-    public void allowedPermissionOpenCV() {
-        Intent intent = new Intent(this, OpenCV.class);
-        startActivity(intent);
+    public void allowedPermissionCameraDetection() {
+        Intent intent = new Intent(this, BaA_FaceDetection.class);
+        startActivityForResult(intent,11);
     }
 
     @Override
@@ -103,7 +94,6 @@ public abstract class PickProfileImage extends AskPermission {
                 break;
             case ACT_RESULT_CROP:
                 File file = null;
-                Bitmap bitmap = null;
                 try {
                     // 크롭된 이미지를 담는 파일 생성
                     String name = System.currentTimeMillis() + ".png";
@@ -112,7 +102,7 @@ public abstract class PickProfileImage extends AskPermission {
                         Log.e(TAG, "크롭된 이미지를 담는 파일 생성: " + file.getAbsolutePath());
 
                     if (data != null && data.getExtras() != null) {
-                        bitmap = data.getExtras().getParcelable("data");
+                        Bitmap bitmap = data.getExtras().getParcelable("data");
                         OutputStream outputStream = new FileOutputStream(file);
                         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
                         if (bitmap != null)
@@ -126,7 +116,7 @@ public abstract class PickProfileImage extends AskPermission {
 
                 intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
                 sendBroadcast(intent);
-                onAfterProfile(file, bitmap);
+                onAfterProfile(file);
                 break;
         }
     }

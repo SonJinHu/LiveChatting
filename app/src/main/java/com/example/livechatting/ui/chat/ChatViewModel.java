@@ -1,14 +1,14 @@
-package com.example.livechatting.ui.home;
+package com.example.livechatting.ui.chat;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class ChatViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public ChatViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

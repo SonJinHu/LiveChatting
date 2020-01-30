@@ -19,7 +19,7 @@ public abstract class AskPermission extends AppCompatActivity {
     public final String[] PERMISSIONS_ALBUM = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     public final int PER_RESULT_ALBUM = 100;
     public final int PER_RESULT_CAMERA = 200;
-    public final int PER_RESULT_CAMERA_OPENCV = 300;
+    public final int PER_RESULT_CAMERA_DETECTION = 300;
     public final int ACT_RESULT_SETTINGS_ALBUM = 400;
     public final int ACT_RESULT_SETTINGS_CAMERA = 500;
 
@@ -27,7 +27,7 @@ public abstract class AskPermission extends AppCompatActivity {
 
     public abstract void allowedPermissionCamera();
 
-    public abstract void allowedPermissionOpenCV();
+    public abstract void allowedPermissionCameraDetection();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -54,12 +54,12 @@ public abstract class AskPermission extends AppCompatActivity {
             }
         }
 
-        if (requestCode == PER_RESULT_CAMERA || requestCode == PER_RESULT_CAMERA_OPENCV) {
+        if (requestCode == PER_RESULT_CAMERA || requestCode == PER_RESULT_CAMERA_DETECTION) {
             if (checkResult) {
                 if (requestCode == PER_RESULT_CAMERA) {
                     allowedPermissionCamera();
                 } else {
-                    allowedPermissionOpenCV();
+                    allowedPermissionCameraDetection();
                 }
             } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])

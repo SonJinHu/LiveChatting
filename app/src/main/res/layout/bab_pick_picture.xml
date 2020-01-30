@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/c_appBarLayout"
+        android:id="@+id/bab_appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
@@ -18,27 +18,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
-        android:id="@+id/c_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/c_navigation"
+    <ImageView
+        android:id="@+id/bab_iv_selected"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/profile_default"
+        app:layout_constraintBottom_toTopOf="@+id/bab_recycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/c_appBarLayout"
-        app:navGraph="@navigation/c_navigation" />
+        app:layout_constraintTop_toBottomOf="@+id/bab_appBarLayout"
+        tools:ignore="ContentDescription" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/c_navigation"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bab_recycler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@android:color/darker_gray"
+        android:clipToPadding="false"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/c_nav_menu" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:itemCount="1"
+        tools:listitem="@layout/bab_pick_picture_item" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
