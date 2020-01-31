@@ -5,18 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/c_appBarLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/c_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/c_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ToolbarTheme"
+        tools:ignore="MissingConstraints" />
 
     <fragment
         android:id="@+id/c_fragment"
@@ -24,14 +20,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/c_navigation"
+        app:layout_constraintBottom_toTopOf="@+id/c_bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/c_appBarLayout"
+        app:layout_constraintTop_toBottomOf="@+id/c_toolbar"
         app:navGraph="@navigation/c_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/c_navigation"
+        android:id="@+id/c_bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"

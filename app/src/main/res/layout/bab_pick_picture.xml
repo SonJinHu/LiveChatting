@@ -5,18 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/bab_appBarLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/c_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/c_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ToolbarTheme"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/bab_iv_selected"
@@ -27,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bab_recycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bab_appBarLayout"
+        app:layout_constraintTop_toBottomOf="@+id/c_toolbar"
         tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -41,6 +37,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:itemCount="1"
-        tools:listitem="@layout/bab_pick_picture_item" />
+        tools:listitem="@layout/bab_item_picture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

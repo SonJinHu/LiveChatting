@@ -117,6 +117,7 @@ public class B_SignIn extends AppCompatActivity implements View.OnClickListener 
                                     Shared.setIsAuto(getApplicationContext(),false);
                                 }
 
+                                UserInfo.num = list.get(0).getNum();
                                 UserInfo.id = list.get(0).getId();
                                 UserInfo.nick = list.get(0).getNick();
                                 UserInfo.img = list.get(0).getImg();

@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_friends"
+        android:icon="@drawable/selector_c_person"
+        android:title="@string/title_friends" />
+
+    <item
         android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_person_outline_black_24dp"
+        android:icon="@drawable/selector_c_chat"
         android:title="@string/title_chat" />
 
     <item
-        android:id="@+id/navigation_friends"
-        android:icon="@drawable/ic_chat_bubble_outline_black_24dp"
-        android:title="@string/title_friends" />
+        android:id="@+id/navigation_broadcast"
+        android:icon="@drawable/selector_c_cam"
+        android:title="@string/title_broadcast" />
 
 </menu>

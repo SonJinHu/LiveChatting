@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/action_complete"
-        android:icon="@drawable/ic_check_white_24dp"
+        android:icon="@drawable/ic_check_black_24dp"
         android:title="초기화"
         app:showAsAction="always"
         tools:ignore="HardcodedText" />

@@ -21,15 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.livechatting.data.Constant;
-import com.example.livechatting.function.RecyclerViewItemPadding;
+import com.example.livechatting.function.ItemDecorationHorizontal;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class BaB_PickPicture extends AppCompatActivity {
-
-    //private final String TAG = getClass().getName();
 
     ImageView iv_selected;
     String path;
@@ -42,7 +40,7 @@ public class BaB_PickPicture extends AppCompatActivity {
         String timeStamp = getIntent().getStringExtra("timeStamp");
 
         Toolbar toolbar = findViewById(R.id.c_toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(v -> finish());
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
@@ -67,7 +65,7 @@ public class BaB_PickPicture extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         recycler.setAdapter(new PictureListAdapter(fileList));
-        recycler.addItemDecoration(new RecyclerViewItemPadding(this, 16));
+        recycler.addItemDecoration(new ItemDecorationHorizontal(this, 16));
     }
 
     @Override
@@ -108,7 +106,7 @@ public class BaB_PickPicture extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bab_pick_picture_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bab_item_picture, parent, false);
             return new ViewHolder(view);
         }
 
@@ -143,8 +141,8 @@ public class BaB_PickPicture extends AppCompatActivity {
 
             ViewHolder(View itemView) {
                 super(itemView);
-                iv_profile = itemView.findViewById(R.id.bab_iv_item);
-                v_checked = itemView.findViewById(R.id.bab_view_selected);
+                iv_profile = itemView.findViewById(R.id.bab_item_iv);
+                v_checked = itemView.findViewById(R.id.bab_item_view_selected);
 
                 iv_profile.setOnClickListener(v -> {
                     int position = getAdapterPosition();

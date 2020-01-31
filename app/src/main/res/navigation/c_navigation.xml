@@ -3,18 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_chat">
-
-    <fragment
-        android:id="@+id/navigation_chat"
-        android:name="com.example.livechatting.ui.chat.ChatFragment"
-        android:label="@string/title_chat"
-        tools:layout="@layout/c_fragment_chat" />
+    app:startDestination="@+id/navigation_friends">
 
     <fragment
         android:id="@+id/navigation_friends"
-        android:name="com.example.livechatting.ui.friends.FriendsFragment"
+        android:name="com.example.livechatting.Ca_FriendsFragment"
         android:label="@string/title_friends"
-        tools:layout="@layout/c_fragment_friends" />
+        tools:layout="@layout/ca_friends" />
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.example.livechatting.Cb_ChatRoomsFragment"
+        android:label="@string/title_chat"
+        tools:layout="@layout/cb_rooms" />
+
+    <fragment
+        android:id="@+id/navigation_broadcast"
+        android:name="com.example.livechatting.Cc_BroadcastFragment"
+        android:label="@string/title_broadcast"
+        tools:layout="@layout/cc_broadcast" />
 
 </navigation>

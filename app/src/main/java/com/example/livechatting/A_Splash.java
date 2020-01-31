@@ -2,14 +2,11 @@ package com.example.livechatting;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.livechatting.data.Constant;
 import com.example.livechatting.data.Shared;
 
 public class A_Splash extends AppCompatActivity {

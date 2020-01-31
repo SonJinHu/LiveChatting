@@ -9,4 +9,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:drawableTint">@android:color/white</item>
+    </style>
+
 </resources>

@@ -11,4 +11,25 @@ public class ChargerList {
     public ArrayList<Charger.SignIn> getSignIn() {
         return signIn;
     }
+
+    @SerializedName("friends")
+    private ArrayList<Charger.Friends> friends;
+
+    public ArrayList<Charger.Friends> getFriends() {
+        return friends;
+    }
+
+    @SerializedName("rooms")
+    private ArrayList<Charger.Rooms> rooms;
+
+    public ArrayList<Charger.Rooms> getRooms() {
+        return rooms;
+    }
+
+    @SerializedName("messages")
+    private ArrayList<Charger.Messages> messages;
+
+    public ArrayList<Charger.Messages> getMessages() {
+        return messages;
+    }
 }

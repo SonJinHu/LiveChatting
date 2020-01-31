@@ -8,12 +8,12 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecyclerViewItemPadding extends RecyclerView.ItemDecoration {
+public class ItemDecorationVertical extends RecyclerView.ItemDecoration {
 
     private Context context;
     private int margin;
 
-    public RecyclerViewItemPadding(Context context, @IntRange(from = 0) int margin) {
+    public ItemDecorationVertical(Context context, @IntRange(from = 0) int margin) {
         this.context = context;
         this.margin = margin;
     }
@@ -22,7 +22,7 @@ public class RecyclerViewItemPadding extends RecyclerView.ItemDecoration {
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         if (parent.getChildAdapterPosition(view) != 0)
-            outRect.left = pixelToDp(margin);
+            outRect.top = pixelToDp(margin);
     }
 
     private int pixelToDp(int pixel) {

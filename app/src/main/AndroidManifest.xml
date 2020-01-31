@@ -58,6 +58,9 @@
         <activity
             android:name=".C_Main"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".D_ChatMessages"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

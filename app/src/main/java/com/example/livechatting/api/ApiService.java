@@ -14,4 +14,22 @@ public interface ApiService {
             @Field("id") String id,
             @Field("pw") String pw
     );
+
+    @FormUrlEncoded
+    @POST(Constant.URL + Constant.FRIENDS)
+    Call<ChargerList> friends(
+            @Field("userNum") String userNum
+    );
+
+    @FormUrlEncoded
+    @POST(Constant.URL + Constant.ROOMS)
+    Call<ChargerList> rooms(
+            @Field("userNum") String userNum
+    );
+
+    @FormUrlEncoded
+    @POST(Constant.URL + Constant.MESSAGES)
+    Call<ChargerList> messages(
+            @Field("roomNum") String roomNum
+    );
 }
