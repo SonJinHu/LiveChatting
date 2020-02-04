@@ -1,6 +1,6 @@
 package com.example.livechatting.api;
 
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -9,27 +9,28 @@ import retrofit2.http.POST;
 
 public interface ApiService {
     @FormUrlEncoded
-    @POST(Constant.URL + Constant.SIGN_IN)
+    @POST(Constants.URL + Constants.SIGN_IN)
     Call<ChargerList> signIn(
             @Field("id") String id,
             @Field("pw") String pw
     );
 
     @FormUrlEncoded
-    @POST(Constant.URL + Constant.FRIENDS)
+    @POST(Constants.URL + Constants.FRIENDS)
     Call<ChargerList> friends(
             @Field("userNum") String userNum
     );
 
     @FormUrlEncoded
-    @POST(Constant.URL + Constant.ROOMS)
+    @POST(Constants.URL + Constants.ROOMS)
     Call<ChargerList> rooms(
             @Field("userNum") String userNum
     );
 
     @FormUrlEncoded
-    @POST(Constant.URL + Constant.MESSAGES)
+    @POST(Constants.URL + Constants.MESSAGES)
     Call<ChargerList> messages(
-            @Field("roomNum") String roomNum
+            @Field("roomNum") String roomNum,
+            @Field("userNum") String userNum
     );
 }

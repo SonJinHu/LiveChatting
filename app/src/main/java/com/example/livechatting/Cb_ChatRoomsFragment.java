@@ -125,6 +125,7 @@ public class Cb_ChatRoomsFragment extends Fragment {
                     Intent intent = new Intent(activity, D_ChatMessages.class);
                     intent.putExtra("roomNum", items.get(position).getRoomNum());
                     intent.putExtra("roomName", items.get(position).getRoomName());
+                    intent.putExtra("userCount", items.get(position).getUserCount());
                     startActivity(intent);
                 });
             }

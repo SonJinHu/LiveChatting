@@ -5,12 +5,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,10 +26,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.livechatting.api.ApiService;
+import com.example.livechatting.api.AsyncTask;
 import com.example.livechatting.api.Charger;
 import com.example.livechatting.api.ChargerList;
 import com.example.livechatting.api.RetroClient;
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
+import com.example.livechatting.data.UserInfo;
 import com.example.livechatting.data.messages.DateObject;
 import com.example.livechatting.data.messages.ListObject;
 import com.example.livechatting.data.messages.MessagesObject;
@@ -50,7 +55,7 @@ import retrofit2.Response;
 
 public class D_ChatMessages extends AppCompatActivity {
 
-    //private final String TAG = getClass().getName();
+    private final String TAG = getClass().getName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +64,7 @@ public class D_ChatMessages extends AppCompatActivity {
 
         String roomNum = getIntent().getStringExtra("roomNum");
         String roomName = getIntent().getStringExtra("roomName");
+        //String userCount = getIntent().getStringExtra("userCount");
 
         Toolbar toolbar = findViewById(R.id.d_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -67,7 +73,9 @@ public class D_ChatMessages extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(roomName);
 
-        loadMessages(roomNum);
+        RecyclerView recycler = findViewById(R.id.d_recycler);
+        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recycler.addItemDecoration(new ItemDecorationVertical(getApplicationContext(), 16));
 
         EditText inputMsg = findViewById(R.id.d_et_inputMsg);
         inputMsg.addTextChangedListener(new TextWatcher() {
@@ -88,7 +96,7 @@ public class D_ChatMessages extends AppCompatActivity {
                 } else {
                     sendMsg.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                     sendMsg.setColorFilter(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
-                    sendMsg.setOnClickListener(v -> sendMessage());
+                    sendMsg.setOnClickListener(v -> sendMessages(roomNum, s.toString()));
                 }
             }
 
@@ -99,9 +107,32 @@ public class D_ChatMessages extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String roomNum = getIntent().getStringExtra("roomNum");
+        loadMessages(roomNum);
+    }
+
+    @Override
+    public boolean onCreatePanelMenu(int featureId, @NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.d_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            onResume();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void loadMessages(String roomNum) {
         ApiService api = RetroClient.getApiService();
-        Call<ChargerList> call = api.messages(roomNum);
+        Call<ChargerList> call = api.messages(roomNum, UserInfo.num);
         call.enqueue(new Callback<ChargerList>() {
             @Override
             public void onResponse(@NonNull Call<ChargerList> call, @NonNull Response<ChargerList> response) {
@@ -111,9 +142,9 @@ public class D_ChatMessages extends AppCompatActivity {
                         List<ListObject> list = generateMessages(items);
 
                         RecyclerView recycler = findViewById(R.id.d_recycler);
-                        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         recycler.setAdapter(new MessagesAdapter(list));
-                        recycler.addItemDecoration(new ItemDecorationVertical(getApplicationContext(), 16));
+                        // list 가장 아래(가장 최근 매시지)를 보여줌
+                        recycler.scrollToPosition(list.size() - 1);
                     }
                 }
             }
@@ -123,6 +154,22 @@ public class D_ChatMessages extends AppCompatActivity {
                 Log.e("onFailure", Objects.requireNonNull(t.getMessage()));
             }
         });
+    }
+
+    private void sendMessages(String roomNum, String msg) {
+        String url = Constants.URL + Constants.MESSAGES_SAVE;
+        String param = "roomNum=" + roomNum +
+                "&senderNum=" + UserInfo.num +
+                "&msg=" + msg;
+
+        AsyncTask.RequestServer async = new AsyncTask.RequestServer();
+        async.setOnPostListener(result -> {
+            if (!result.equals("0")) {
+                String string = getString(R.string.server_error);
+                Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
+            }
+        });
+        async.execute(url, param);
     }
 
     // 채팅창에서 날짜, 타인 메세지, 자기 메세지
@@ -169,10 +216,6 @@ public class D_ChatMessages extends AppCompatActivity {
             }
         }
         return list;
-    }
-
-    private void sendMessage() {
-
     }
 
     class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -258,7 +301,7 @@ public class D_ChatMessages extends AppCompatActivity {
                             .into(iv_profile);
                 } else {
                     Glide.with(getApplicationContext())
-                            .load(Constant.URL + item.getUserImg())
+                            .load(Constants.URL + item.getUserImg())
                             .placeholder(R.drawable.profile_default)
                             .error(R.drawable.profile_default)
                             .apply(RequestOptions.circleCropTransform())
@@ -267,6 +310,11 @@ public class D_ChatMessages extends AppCompatActivity {
                 tv_nick.setText(item.getUserNick());
                 tv_leftMsg.setText(item.getMessage());
                 tv_leftTime.setText(Time.convertMsgTime(item.getMsgTime()));
+                if (item.getCountToRead().equals("0")) {
+                    tv_leftCount.setText("");
+                } else {
+                    tv_leftCount.setText(item.getCountToRead());
+                }
             }
         }
 
@@ -286,6 +334,11 @@ public class D_ChatMessages extends AppCompatActivity {
             void bind(Charger.Messages item) {
                 tv_rightMsg.setText(item.getMessage());
                 tv_rightTime.setText(Time.convertMsgTime(item.getMsgTime()));
+                if (item.getCountToRead().equals("0")) {
+                    tv_rightCount.setText("");
+                } else {
+                    tv_rightCount.setText(item.getCountToRead());
+                }
             }
         }
 

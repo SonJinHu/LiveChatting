@@ -7,22 +7,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Time {
-    // 채팅 메시지의 시간을 'HH:mm'으로 표현
-    public static String convertMsgTime(String time) {
-        String convertTime = null;
-        try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
-            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date date = inputFormat.parse(time);
-            if (date != null)
-                convertTime = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return convertTime;
-    }
-
     // 채팅방 목록에 표시하는 마지막 메시지 시간을 현재 시간과 비교하여 다르게 표현
     public static String convertLastMsgTime(String time) {
         SimpleDateFormat sdf_year = new SimpleDateFormat("yyyy", Locale.getDefault());
@@ -53,5 +37,21 @@ public class Time {
         } else {
             return sdf_year_date.format(message);
         }
+    }
+
+    // 채팅 메시지의 시간을 'HH:mm'으로 표현
+    public static String convertMsgTime(String time) {
+        String convertTime = null;
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date date = inputFormat.parse(time);
+            if (date != null)
+                convertTime = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return convertTime;
     }
 }

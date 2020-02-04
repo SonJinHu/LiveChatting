@@ -1,6 +1,6 @@
 package com.example.livechatting.api;
 
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -108,7 +108,7 @@ public class AsyncTask {
 
                 // Attach RequestBody and Url to Request
                 Request request = new Request.Builder()
-                        .url(Constant.URL + Constant.SIGN_UP)
+                        .url(Constants.URL + Constants.SIGN_UP)
                         .post(requestBody)
                         .build();
 

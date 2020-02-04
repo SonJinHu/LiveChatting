@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +20,7 @@ import com.example.livechatting.api.ApiService;
 import com.example.livechatting.api.Charger;
 import com.example.livechatting.api.ChargerList;
 import com.example.livechatting.api.RetroClient;
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 import com.example.livechatting.data.UserInfo;
 import com.example.livechatting.function.ItemDecorationVertical;
 
@@ -34,7 +33,7 @@ import retrofit2.Response;
 
 public class Ca_FriendsFragment extends Fragment {
 
-    private final String TAG = getClass().getName();
+    //private final String TAG = getClass().getName();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.ca_friends, container, false);
@@ -47,6 +46,14 @@ public class Ca_FriendsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         ArrayList<Charger.Friends> list = response.body().getFriends();
+
+                        // 내 프로필 정보 추가
+                        Charger charger = new Charger();
+                        Charger.Friends myProfile = charger.new Friends();
+                        myProfile.setNum(UserInfo.num);
+                        myProfile.setNick(UserInfo.nick);
+                        myProfile.setImg(UserInfo.img);
+                        list.add(0, myProfile);
 
                         RecyclerView recycler = root.findViewById(R.id.ca_recycler);
                         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -91,7 +98,7 @@ public class Ca_FriendsFragment extends Fragment {
                         .into(holder.iv);
             } else {
                 Glide.with(activity)
-                        .load(Constant.URL + items.get(position).getImg())
+                        .load(Constants.URL + items.get(position).getImg())
                         .placeholder(R.drawable.profile_default)
                         .error(R.drawable.profile_default)
                         .apply(RequestOptions.circleCropTransform())

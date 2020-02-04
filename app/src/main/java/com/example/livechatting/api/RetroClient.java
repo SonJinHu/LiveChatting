@@ -1,6 +1,6 @@
 package com.example.livechatting.api;
 
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetroClient {
     private static Retrofit getRetrofitInstance() {
         return new Retrofit.Builder()
-                .baseUrl(Constant.URL)
+                .baseUrl(Constants.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

@@ -60,7 +60,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".D_ChatMessages"
+            android:theme="@style/ChatAppTheme"
             android:screenOrientation="portrait" />
+
+        <!--exported="false" 본인의 앱에만 사용 가능-->
+        <service
+            android:name=".function.SocketService"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

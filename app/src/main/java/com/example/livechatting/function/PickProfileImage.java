@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -13,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.example.livechatting.BaA_FaceDetection;
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -44,7 +43,7 @@ public abstract class PickProfileImage extends AskPermission {
     public void allowedPermissionCamera() {
         // 카메라가 찍은 사진을 임시로 담아놓는 파일 생성
         String name = "tmp_" + System.currentTimeMillis() + ".png";
-        File file = new File(Constant.DIRECTORY_PATH, name);
+        File file = new File(Constants.DIRECTORY_PATH, name);
         try {
             if (file.createNewFile())
                 Log.e(TAG, "카메라가 찍은 사진을 임시로 담아놓는 파일 생성: " + file.getAbsolutePath());
@@ -97,7 +96,7 @@ public abstract class PickProfileImage extends AskPermission {
                 try {
                     // 크롭된 이미지를 담는 파일 생성
                     String name = System.currentTimeMillis() + ".png";
-                    file = new File(Constant.DIRECTORY_PATH, name);
+                    file = new File(Constants.DIRECTORY_PATH, name);
                     if (file.createNewFile())
                         Log.e(TAG, "크롭된 이미지를 담는 파일 생성: " + file.getAbsolutePath());
 

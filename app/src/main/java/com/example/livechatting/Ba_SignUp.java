@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.livechatting.api.AsyncTask;
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 import com.example.livechatting.function.PickProfileImage;
 
 import java.io.File;
@@ -60,7 +60,7 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
         tv_signIn.setOnClickListener(this);
 
         // 이미지 파일 저장할 폴더 생성
-        File dir = new File(Constant.DIRECTORY_PATH);
+        File dir = new File(Constants.DIRECTORY_PATH);
         if (!dir.exists() && dir.mkdir())
             Log.e(TAG, "LiveChatting 폴더 생성: " + dir.getAbsolutePath());
 
@@ -159,7 +159,7 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
     }
 
     private void checkId() {
-        String url = Constant.URL + Constant.CHECK_ID;
+        String url = Constants.URL + Constants.CHECK_ID;
         String param = "id=" + et_id.getText().toString();
 
         AsyncTask.RequestServer async = new AsyncTask.RequestServer();
@@ -176,7 +176,7 @@ public class Ba_SignUp extends PickProfileImage implements View.OnClickListener 
     }
 
     private void checkNick() {
-        String url = Constant.URL + Constant.CHECK_NICK;
+        String url = Constants.URL + Constants.CHECK_NICK;
         String param = "nick=" + et_nick.getText().toString();
 
         AsyncTask.RequestServer async = new AsyncTask.RequestServer();

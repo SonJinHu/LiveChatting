@@ -3,4 +3,6 @@
     <string name="title_friends">Friends</string>
     <string name="title_chat">Chat</string>
     <string name="title_broadcast">Broadcast</string>
+
+    <string name="server_error">잠시 후에 다시 시도해주세요</string>
 </resources>

@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="닉네임"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="@+id/ca_item_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ca_item_iv"

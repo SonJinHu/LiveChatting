@@ -9,6 +9,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ChatAppTheme" parent="AppTheme">
+        # status bar color 반투명,but view includes status bar area
+        <item name="android:windowTranslucentStatus">true</item>
+        # prevent view from including status bar area
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:tint">@android:color/white</item>
         <item name="android:drawableTint">@android:color/white</item>

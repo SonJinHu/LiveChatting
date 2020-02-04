@@ -64,6 +64,18 @@ public class Charger {
         public String getImg() {
             return img;
         }
+
+        public void setNum(String num) {
+            this.num = num;
+        }
+
+        public void setNick(String nick) {
+            this.nick = nick;
+        }
+
+        public void setImg(String img) {
+            this.img = img;
+        }
     }
 
     public class Rooms {
@@ -105,6 +117,9 @@ public class Charger {
     }
 
     public class Messages {
+        @SerializedName("countToRead")
+        @Expose
+        private String countToRead;
         @SerializedName("userNum")
         @Expose
         private String userNum;
@@ -120,6 +135,10 @@ public class Charger {
         @SerializedName("msgTime")
         @Expose
         private String msgTime;
+
+        public String getCountToRead() {
+            return countToRead;
+        }
 
         public String getUserNum() {
             return userNum;

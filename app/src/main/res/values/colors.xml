@@ -6,4 +6,5 @@
 
     <color name="colorTranslucent">#80000000</color>
     <color name="messagesNotRead">#FEF01B</color>
+    <color name="backgroundInChatRoom">#9bbbd4</color>
 </resources>

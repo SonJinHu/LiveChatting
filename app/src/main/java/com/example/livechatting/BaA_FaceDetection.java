@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatToggleButton;
 
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -252,14 +252,14 @@ public class BaA_FaceDetection extends AppCompatActivity {
     }
 
     private void readCascadeFile() {
-        copyCascadeFile(Constant.HAAR_EYE_FILE);
-        copyCascadeFile(Constant.HAAR_FACE_FILE);
-        cascadeClassifier_eye = loadCascade(Constant.DIRECTORY_PATH + File.separator + Constant.HAAR_EYE_FILE);
-        cascadeClassifier_face = loadCascade(Constant.DIRECTORY_PATH + File.separator + Constant.HAAR_FACE_FILE);
+        copyCascadeFile(Constants.HAAR_EYE_FILE);
+        copyCascadeFile(Constants.HAAR_FACE_FILE);
+        cascadeClassifier_eye = loadCascade(Constants.DIRECTORY_PATH + File.separator + Constants.HAAR_EYE_FILE);
+        cascadeClassifier_face = loadCascade(Constants.DIRECTORY_PATH + File.separator + Constants.HAAR_FACE_FILE);
     }
 
     private void copyCascadeFile(String fileName) {
-        String pathDir = Constant.DIRECTORY_PATH + File.separator + fileName;
+        String pathDir = Constants.DIRECTORY_PATH + File.separator + fileName;
         try {
             InputStream inputStream = getAssets().open(fileName);
             OutputStream outputStream = new FileOutputStream(pathDir);

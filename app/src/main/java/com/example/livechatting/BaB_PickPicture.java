@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.livechatting.data.Constant;
+import com.example.livechatting.data.Constants;
 import com.example.livechatting.function.ItemDecorationHorizontal;
 
 import java.io.File;
@@ -52,7 +52,7 @@ public class BaB_PickPicture extends AppCompatActivity {
                 .apply(RequestOptions.circleCropTransform())
                 .into(iv_selected);
 
-        File file = new File(Constant.DIRECTORY_PATH);
+        File file = new File(Constants.DIRECTORY_PATH);
         File[] files = file.listFiles(pathname -> {
             assert timeStamp != null;
             return pathname.getName().startsWith(timeStamp);
