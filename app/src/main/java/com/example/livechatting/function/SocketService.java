@@ -1,11 +1,16 @@
 package com.example.livechatting.function;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.example.livechatting.data.Constants;
 import com.example.livechatting.data.UserInfo;
@@ -16,35 +21,64 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class SocketService extends Service {
 
+    private final String TAG = getClass().getName();
+    public static final int MSG_REGISTER_CLIENT = 0;
+    public static final int MSG_UNREGISTER_CLIENT = 1;
+    public static final int MESSAGE = 2;
+
+    private ServiceThread mThread;
+    private ArrayList<Messenger> mClients = new ArrayList<>();
+
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
+    public void onCreate() {
+        super.onCreate();
+        mThread = new ServiceThread();
     }
 
-    // 서비스가 모든 클라이언트로부터 바인딩이 해제되면
-    // 시스템이 서비스를 소멸시킵니다.
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        // 서비스 시작
+        Log.e(TAG, "onBind :: 서비스 시작");
+        if (mThread.getState() == Thread.State.NEW)
+            mThread.start();
+        return new Messenger(new ServiceHandler()).getBinder();
     }
 
-    class ServerThread extends Thread {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 서비스 종료
+        Log.e(TAG, "onDestroy :: 서비스 종료");
+        if (mThread.isAlive())
+            mThread.turnOff();
+    }
 
-        private final String TAG = getClass().getName();
-        private Socket sock;
-
-        void turnOff() {
-            try {
-                if (sock.isConnected())
-                    sock.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+    @SuppressLint("HandlerLeak")
+    private class ServiceHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case MSG_REGISTER_CLIENT:
+                    mClients.add(msg.replyTo);
+                    Log.e(TAG, "client add :: size:" + mClients.size());
+                    break;
+                case MSG_UNREGISTER_CLIENT:
+                    mClients.remove(msg.replyTo);
+                    Log.e(TAG, "client remove :: size:" + mClients.size());
+                    break;
+                default:
+                    super.handleMessage(msg);
             }
         }
+    }
+
+    private class ServiceThread extends Thread {
+
+        private Socket sock;
 
         @Override
         public void run() {
@@ -56,10 +90,32 @@ public class SocketService extends Service {
 
                 String line;
                 while ((line = in.readLine()) != null) {
-                    Log.e(TAG, "Message :: " + line);
+                    Log.e(TAG, "get message from server :: " + line);
+                    sendMessage(line);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+
+        void turnOff() {
+            try {
+                if (sock != null && sock.isConnected())
+                    sock.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void sendMessage(String message) {
+            Message msg = Message.obtain(null, SocketService.MESSAGE, message);
+            for (int i = 0; i < mClients.size(); i++) {
+                try {
+                    mClients.get(i).send(msg); // Check exception
+                    mClients.remove(i);
+                } catch (RemoteException | IllegalStateException e) {
+                    mClients.remove(i); // The client is dead. Remove it from the list.
+                }
             }
         }
     }

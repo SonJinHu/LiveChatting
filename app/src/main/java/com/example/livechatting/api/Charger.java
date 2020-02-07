@@ -88,6 +88,9 @@ public class Charger {
         @SerializedName("userCount")
         @Expose
         private String userCount;
+        @SerializedName("notReadMsgCount")
+        @Expose
+        private String notReadMsgCount;
         @SerializedName("lastMsg")
         @Expose
         private String lastMsg;
@@ -105,6 +108,10 @@ public class Charger {
 
         public String getUserCount() {
             return userCount;
+        }
+
+        public String getNotReadMsgCount() {
+            return notReadMsgCount;
         }
 
         public String getLastMsg() {

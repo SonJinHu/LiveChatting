@@ -40,11 +40,11 @@ public class BaB_PickPicture extends AppCompatActivity {
         String timeStamp = getIntent().getStringExtra("timeStamp");
 
         Toolbar toolbar = findViewById(R.id.c_toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        toolbar.setNavigationOnClickListener(v -> finish());
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle("프로필 사진 선택");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         iv_selected = findViewById(R.id.bab_iv_selected);
         Glide.with(getApplicationContext())

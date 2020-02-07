@@ -65,5 +65,19 @@
         app:layout_constraintTop_toTopOf="@+id/cb_item_tv_userCount"
         tools:ignore="HardcodedText" />
 
+    <TextView
+        android:id="@+id/cb_item_tv_notReadMsgCount"
+        android:layout_width="18dp"
+        android:gravity="center"
+        android:layout_height="18dp"
+        android:background="@drawable/shape_circle_red"
+        android:text="5"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/cb_item_tv_lastMsg"
+        app:layout_constraintEnd_toEndOf="@+id/cb_item_tv_lastMsgTime"
+        app:layout_constraintTop_toTopOf="@+id/cb_item_tv_lastMsg"
+        tools:ignore="HardcodedText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

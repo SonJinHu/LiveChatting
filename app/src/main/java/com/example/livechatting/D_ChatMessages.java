@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +35,7 @@ import com.example.livechatting.data.messages.DateObject;
 import com.example.livechatting.data.messages.ListObject;
 import com.example.livechatting.data.messages.MessagesObject;
 import com.example.livechatting.function.ItemDecorationVertical;
+import com.example.livechatting.function.ServiceBind;
 import com.example.livechatting.function.Time;
 
 import java.text.ParseException;
@@ -53,25 +53,30 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class D_ChatMessages extends AppCompatActivity {
+public class D_ChatMessages extends ServiceBind {
 
-    private final String TAG = getClass().getName();
+    String roomNum;
+
+    @Override
+    public void receiveMessage(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        onResume();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_messages);
 
-        String roomNum = getIntent().getStringExtra("roomNum");
+        roomNum = getIntent().getStringExtra("roomNum");
         String roomName = getIntent().getStringExtra("roomName");
-        //String userCount = getIntent().getStringExtra("userCount");
 
         Toolbar toolbar = findViewById(R.id.d_toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        toolbar.setNavigationOnClickListener(v -> finish());
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(roomName);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         RecyclerView recycler = findViewById(R.id.d_recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -96,7 +101,7 @@ public class D_ChatMessages extends AppCompatActivity {
                 } else {
                     sendMsg.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                     sendMsg.setColorFilter(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
-                    sendMsg.setOnClickListener(v -> sendMessages(roomNum, s.toString()));
+                    sendMsg.setOnClickListener(v -> sendMessages(s.toString()));
                 }
             }
 
@@ -110,12 +115,11 @@ public class D_ChatMessages extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String roomNum = getIntent().getStringExtra("roomNum");
-        loadMessages(roomNum);
+        loadMessages();
     }
 
     @Override
-    public boolean onCreatePanelMenu(int featureId, @NonNull Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.d_menu, menu);
         return true;
     }
@@ -130,7 +134,7 @@ public class D_ChatMessages extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadMessages(String roomNum) {
+    private void loadMessages() {
         ApiService api = RetroClient.getApiService();
         Call<ChargerList> call = api.messages(roomNum, UserInfo.num);
         call.enqueue(new Callback<ChargerList>() {
@@ -156,7 +160,7 @@ public class D_ChatMessages extends AppCompatActivity {
         });
     }
 
-    private void sendMessages(String roomNum, String msg) {
+    private void sendMessages(String msg) {
         String url = Constants.URL + Constants.MESSAGES_SAVE;
         String param = "roomNum=" + roomNum +
                 "&senderNum=" + UserInfo.num +
@@ -218,7 +222,7 @@ public class D_ChatMessages extends AppCompatActivity {
         return list;
     }
 
-    class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<ListObject> list;
 

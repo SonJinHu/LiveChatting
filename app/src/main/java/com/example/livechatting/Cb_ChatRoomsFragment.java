@@ -21,8 +21,8 @@ import com.example.livechatting.api.Charger;
 import com.example.livechatting.api.ChargerList;
 import com.example.livechatting.api.RetroClient;
 import com.example.livechatting.data.UserInfo;
-import com.example.livechatting.function.Time;
 import com.example.livechatting.function.ItemDecorationVertical;
+import com.example.livechatting.function.Time;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -82,7 +82,7 @@ public class Cb_ChatRoomsFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull RoomsAdapter.ViewHolder holder, int position) {
             holder.tv_roomName.setText(items.get(position).getRoomName());
-            // 방 인원이 2명일 경우, 숫자를 표시하지 않음
+            // 방 인원이 2명일 경우, 표시하지 않음
             if (items.get(position).getUserCount().equals("2")) {
                 holder.iv_roomImage.setImageResource(R.drawable.ic_person_black_24dp);
                 holder.iv_roomImage.setImageTintList(ContextCompat.getColorStateList(activity, android.R.color.white));
@@ -96,6 +96,13 @@ public class Cb_ChatRoomsFragment extends Fragment {
 
             holder.tv_lastMsg.setText(items.get(position).getLastMsg());
             holder.tv_lastMsgTime.setText(Time.convertLastMsgTime(items.get(position).getLastMsgTime()));
+            // 메시지를 다 읽었을 경우(읽지 않은 메시지 갯수가 0개), 표시하지 않음
+            if (items.get(position).getNotReadMsgCount().equals("0")) {
+                holder.tv_notReadMsgCount.setVisibility(View.GONE);
+            } else {
+                holder.tv_notReadMsgCount.setText(items.get(position).getNotReadMsgCount());
+                holder.tv_notReadMsgCount.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -111,6 +118,7 @@ public class Cb_ChatRoomsFragment extends Fragment {
             TextView tv_userCount;
             TextView tv_lastMsg;
             TextView tv_lastMsgTime;
+            TextView tv_notReadMsgCount;
 
             ViewHolder(View itemView) {
                 super(itemView);
@@ -119,13 +127,13 @@ public class Cb_ChatRoomsFragment extends Fragment {
                 tv_userCount = itemView.findViewById(R.id.cb_item_tv_userCount);
                 tv_lastMsg = itemView.findViewById(R.id.cb_item_tv_lastMsg);
                 tv_lastMsgTime = itemView.findViewById(R.id.cb_item_tv_lastMsgTime);
+                tv_notReadMsgCount = itemView.findViewById(R.id.cb_item_tv_notReadMsgCount);
 
                 itemView.setOnClickListener(v -> {
                     int position = getAdapterPosition();
                     Intent intent = new Intent(activity, D_ChatMessages.class);
                     intent.putExtra("roomNum", items.get(position).getRoomNum());
                     intent.putExtra("roomName", items.get(position).getRoomName());
-                    intent.putExtra("userCount", items.get(position).getUserCount());
                     startActivity(intent);
                 });
             }
