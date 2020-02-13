@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class ServiceBind extends AppCompatActivity {
@@ -32,7 +34,12 @@ public abstract class ServiceBind extends AppCompatActivity {
         }
     };
 
-    public abstract void receiveMessage(String message);
+    public abstract void receiveMessage(int flag, String message);
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected void onStart() {
@@ -65,7 +72,10 @@ public abstract class ServiceBind extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SocketService.MESSAGE:
-                    receiveMessage((String) msg.obj);
+                    receiveMessage(SocketService.MESSAGE, (String) msg.obj);
+                    break;
+                case SocketService.DISCONNECT:
+                    receiveMessage(SocketService.DISCONNECT, (String) msg.obj);
                     break;
                 default:
                     super.handleMessage(msg);
@@ -95,7 +105,7 @@ public abstract class ServiceBind extends AppCompatActivity {
      * Unregister client's messenger address from service
      * service needs only one client's address because there's only one client bound to service.
      * 서비스에 등록된 클라이언트의 주소는 한 번만 사용가능
-     * 서비스가 한 주소를 중복 사용할 가능성이 있고 그것은 오류를 불러일으킬 수 있음
+     * 서비스가 클라이언트의 주소를 중복 사용할 가능성이 있고, 그것은 오류를 불러일으킬 수 있음
      * ∴ 적절한 때에 서비스에 등록된 클라이언트의 주소를 해지해야합니다.
      */
     private void unregisterClient() {

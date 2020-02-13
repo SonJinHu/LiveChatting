@@ -1,2 +1,2 @@
-include ':app', ':opencv'
+include ':app', ':opencv', ':webrtc', ':broadcast'
 rootProject.name='LiveChatting'

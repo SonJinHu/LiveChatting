@@ -2,6 +2,10 @@
   <dictionary name="user">
     <words>
       <w>addr</w>
+      <w>antmedia</w>
+      <w>apprtc</w>
+      <w>appspot</w>
+      <w>autofill</w>
       <w>autofocus</w>
       <w>emoji</w>
       <w>fileprovider</w>
@@ -9,6 +13,8 @@
       <w>haar</w>
       <w>livechatting</w>
       <w>opencv</w>
+      <w>rtmp</w>
+      <w>webrtc</w>
     </words>
   </dictionary>
 </component>

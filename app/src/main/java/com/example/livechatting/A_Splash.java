@@ -24,8 +24,9 @@ public class A_Splash extends AppCompatActivity {
             boolean isAutoSignIn = Shared.getIsAuto(getApplicationContext());
             if (isAutoSignIn)
                 goMain();
-            else
+            else {
                 goSignIn();
+            }
 
             /*                SharedPreferences pref = getSharedPreferences("Auto", Context.MODE_PRIVATE);
             final String type = pref.getString("type", "");

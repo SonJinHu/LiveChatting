@@ -167,4 +167,35 @@ public class Charger {
             return msgTime;
         }
     }
+
+    public class Broadcast {
+        @SerializedName("num")
+        @Expose
+        private String num;
+        @SerializedName("nick")
+        @Expose
+        private String nick;
+        @SerializedName("img")
+        @Expose
+        private String img;
+        @SerializedName("rtmp")
+        @Expose
+        private String rtmp;
+
+        public String getNum() {
+            return num;
+        }
+
+        public String getNick() {
+            return nick;
+        }
+
+        public String getImg() {
+            return img;
+        }
+
+        public String getRtmp() {
+            return rtmp;
+        }
+    }
 }

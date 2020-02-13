@@ -62,7 +62,7 @@ public class Cb_ChatRoomsFragment extends Fragment {
         return root;
     }
 
-    class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> {
+    private class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> {
 
         private Activity activity;
         private ArrayList<Charger.Rooms> items;
@@ -131,7 +131,7 @@ public class Cb_ChatRoomsFragment extends Fragment {
 
                 itemView.setOnClickListener(v -> {
                     int position = getAdapterPosition();
-                    Intent intent = new Intent(activity, D_ChatMessages.class);
+                    Intent intent = new Intent(activity, CbA_ChatMessages.class);
                     intent.putExtra("roomNum", items.get(position).getRoomNum());
                     intent.putExtra("roomName", items.get(position).getRoomName());
                     startActivity(intent);

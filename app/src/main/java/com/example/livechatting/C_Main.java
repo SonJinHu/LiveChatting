@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.livechatting.function.ServiceBind;
+import com.example.livechatting.function.SocketService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
@@ -19,8 +20,10 @@ public class C_Main extends ServiceBind {
     private boolean exit = false;
 
     @Override
-    public void receiveMessage(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    public void receiveMessage(int flag, String message) {
+        if (flag == SocketService.MESSAGE) {
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -41,9 +44,6 @@ public class C_Main extends ServiceBind {
                     break;
                 case R.id.navigation_chat:
                     Objects.requireNonNull(getSupportActionBar()).setTitle("채팅");
-                    break;
-                case R.id.navigation_broadcast:
-                    Objects.requireNonNull(getSupportActionBar()).setTitle("방송보기");
                     break;
             }
         });

@@ -39,7 +39,8 @@ public class Time {
         }
     }
 
-    // 채팅 메시지의 시간을 'HH:mm'으로 표현
+    // 채팅방에 있는 채팅메시지에 표시되는 시간
+    // HH:mm 표현
     public static String convertMsgTime(String time) {
         String convertTime = null;
         try {

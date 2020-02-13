@@ -25,7 +25,8 @@ public class AsyncTask {
     }
 
     public static class RequestServer extends android.os.AsyncTask<String, Void, String> {
-        OnPostListener listener;
+
+        OnPostListener listener = null;
 
         public void setOnPostListener(OnPostListener listener) {
             this.listener = listener;
@@ -76,7 +77,8 @@ public class AsyncTask {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            listener.onPostExecute(s);
+            if (listener != null)
+                listener.onPostExecute(s);
         }
     }
 

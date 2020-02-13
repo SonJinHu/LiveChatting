@@ -33,4 +33,10 @@ public interface ApiService {
             @Field("roomNum") String roomNum,
             @Field("userNum") String userNum
     );
+
+    @FormUrlEncoded
+    @POST(Constants.URL + Constants.BROADCAST_LIST)
+    Call<ChargerList> broadcast(
+            @Field("userNum") String userNum
+    );
 }

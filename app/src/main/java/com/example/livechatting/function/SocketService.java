@@ -12,8 +12,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.livechatting.Db_ReceiveVideoCall;
 import com.example.livechatting.data.Constants;
 import com.example.livechatting.data.UserInfo;
+
+import org.appspot.apprtc.ConnectActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +31,8 @@ public class SocketService extends Service {
     private final String TAG = getClass().getName();
     public static final int MSG_REGISTER_CLIENT = 0;
     public static final int MSG_UNREGISTER_CLIENT = 1;
-    public static final int MESSAGE = 2;
+    public static final int DISCONNECT = 2;
+    public static final int MESSAGE = 3;
 
     private ServiceThread mThread;
     private ArrayList<Messenger> mClients = new ArrayList<>();
@@ -91,7 +95,27 @@ public class SocketService extends Service {
                 String line;
                 while ((line = in.readLine()) != null) {
                     Log.e(TAG, "get message from server :: " + line);
-                    sendMessage(line);
+                    String[] parts = line.split(" ", 8);
+                    switch (parts[2]) {
+                        case "message":
+                            sendMessage(SocketService.MESSAGE, line);
+                            break;
+                        case "webrtc_request":
+                            Intent intent = new Intent(getApplicationContext(), Db_ReceiveVideoCall.class);
+                            intent.putExtra("num", parts[3]);
+                            intent.putExtra("nick", parts[4]);
+                            intent.putExtra("img", parts[5]);
+                            getApplicationContext().startActivity(intent);
+                            break;
+                        case "webrtc_connect":
+                            intent = new Intent(getApplicationContext(), ConnectActivity.class);
+                            intent.putExtra("roomName", parts[3]);
+                            getApplicationContext().startActivity(intent);
+                            break;
+                        case "webrtc_disconnect":
+                            sendMessage(SocketService.DISCONNECT, line);
+                            break;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -107,8 +131,8 @@ public class SocketService extends Service {
             }
         }
 
-        private void sendMessage(String message) {
-            Message msg = Message.obtain(null, SocketService.MESSAGE, message);
+        private void sendMessage(int flag, String message) {
+            Message msg = Message.obtain(null, flag, message);
             for (int i = 0; i < mClients.size(); i++) {
                 try {
                     mClients.get(i).send(msg); // Check exception

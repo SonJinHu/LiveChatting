@@ -62,15 +62,14 @@ public class BaB_PickPicture extends AppCompatActivity {
             Collections.addAll(fileList, files);
 
         RecyclerView recycler = findViewById(R.id.bab_recycler);
-        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
-                LinearLayoutManager.HORIZONTAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         recycler.setAdapter(new PictureListAdapter(fileList));
         recycler.addItemDecoration(new ItemDecorationHorizontal(this, 16));
     }
 
     @Override
     public boolean onCreatePanelMenu(int featureId, @NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.bab_menu, menu);
+        getMenuInflater().inflate(R.menu.bab_pick_menu, menu);
         return true;
     }
 

@@ -81,8 +81,7 @@ Java_com_example_livechatting_BaA_1FaceDetection_detect(JNIEnv *env, jobject thi
             0 | CASCADE_SCALE_IMAGE, Size(30, 30));
 
     int count = faces.size();
-    __android_log_print(ANDROID_LOG_DEBUG, (char *) "native-lib :: ",
-                        (char *) "face %d found ", faces.size());
+    //__android_log_print(ANDROID_LOG_DEBUG, (char *) "native-lib :: ", (char *) "face %d found ", faces.size());
 
     for (int i = 0; i < faces.size(); i++) {
         int real_face_size_x = static_cast<int>(faces[i].x / resizeRatio);

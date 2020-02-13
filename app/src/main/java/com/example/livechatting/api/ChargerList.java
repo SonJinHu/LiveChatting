@@ -32,4 +32,11 @@ public class ChargerList {
     public ArrayList<Charger.Messages> getMessages() {
         return messages;
     }
+
+    @SerializedName("broadcast")
+    private ArrayList<Charger.Broadcast> broadcast;
+
+    public ArrayList<Charger.Broadcast> getBroadcast() {
+        return broadcast;
+    }
 }
